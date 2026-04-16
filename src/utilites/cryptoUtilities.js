@@ -13,7 +13,7 @@ export const createMasterKey = async (source, salt) => {
     return derivedKey;
 };
 
-// Creates a Key Pair (Public Key Encryptions). For use with transferring keys between users.
+// Creates a Key Pair (Public Key Encryption). For use with transferring keys between users.
 export const createKeyPair = async () => {
 
     const keyPair = await window.crypto.subtle.generateKey({name: "RSA-OAEP", modulusLength: 4096, publicExponent: new Uint8Array([1, 0, 1]), hash: "SHA-256"}, true, ["encrypt", "decrypt"]);
