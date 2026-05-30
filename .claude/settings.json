@@ -1,7 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "PowerShell(Get-ChildItem \"D:\\\\Vault\\\\Daniel\\\\Vaultweb\" | ForEach-Object { $_.Name })"
-    ]
-  }
-}
