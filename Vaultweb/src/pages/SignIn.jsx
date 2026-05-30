@@ -1,22 +1,38 @@
-import React, { useState } from 'react';
-import { Lock, Mail, ArrowRight, ShieldCheck, Github } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { createMasterKey } from '../utilites/cryptoUtilities';
+import React, { useContext, useState } from 'react';
+import { Lock, Mail, ArrowRight, ShieldCheck, Github, AlertCircle } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 import { submitLogin, retriveUserInfo } from '../utilites/netUtilities';
-import { useContext } from 'react';
-import UserProvider from "../UserContext";
+import { UserContext } from '../UserContext';
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState("");
-  const userInfo = useContext(UserProvider);
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const userInfo = useContext(UserContext);
+  const navigate = useNavigate();
 
   const handleSignIn = async (e) => {
     e.preventDefault();
-    console.log("Initiating secure session for:", email);
-    const result = await submitLogin(email, password);
-    if (result?.confirm === true) {
-      const userData = await retriveUserInfo(result.id);
+    setError(null);
+    setLoading(true);
+    try {
+      const result = await submitLogin(email, password);
+      if (result?.confirm === true) {
+        const userData = await retriveUserInfo(result.id);
+        const user = userData?.result?.user;
+        if (user) {
+          userInfo.setuuID(user.id);
+          userInfo.setUserName(user.email);
+        }
+        navigate('/admin');
+      } else {
+        setError('Invalid email or password.');
+      }
+    } catch {
+      setError('Could not connect to the server. Make sure the API is running.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -40,6 +56,12 @@ const SignIn = () => {
 
         {/* Login Card */}
         <div className="bg-slate-900/50 border border-white/10 backdrop-blur-2xl rounded-3xl p-8 shadow-2xl">
+          {error && (
+            <div className="flex items-center gap-2 mb-5 p-3 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm">
+              <AlertCircle size={15} className="shrink-0" />
+              {error}
+            </div>
+          )}
           <form onSubmit={handleSignIn} className="space-y-5">
             
             <div>
@@ -75,11 +97,12 @@ const SignIn = () => {
               </div>
             </div>
 
-            <button 
-              type="submit" 
-              className="w-full bg-white text-black py-4 rounded-xl font-bold hover:bg-slate-200 transition-all flex items-center justify-center gap-2 group"
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-white text-black py-4 rounded-xl font-bold hover:bg-slate-200 disabled:opacity-60 transition-all flex items-center justify-center gap-2 group"
             >
-              Sign In <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              {loading ? 'Signing in…' : (<>Sign In <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" /></>)}
             </button>
           </form>
 

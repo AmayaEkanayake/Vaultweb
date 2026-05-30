@@ -7,11 +7,12 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const dbPath = path.resolve(__dirname, "../../dev.db");
 
-console.log("DB path:", dbPath);
+let prisma: PrismaClient | null = null;
 
-export function prismaClient(_c: AppContext) {
-  const adapter = new PrismaBetterSqlite3({ url: dbPath });
-  const prisma = new PrismaClient({ adapter });
-
+export function prismaClient(_c: AppContext): PrismaClient {
+  if (!prisma) {
+    const adapter = new PrismaBetterSqlite3({ url: dbPath });
+    prisma = new PrismaClient({ adapter });
+  }
   return prisma;
 }

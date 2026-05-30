@@ -1,5 +1,6 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const UserContext = React.createContext();
 
 const UserProvider = props => {
@@ -8,9 +9,9 @@ const UserProvider = props => {
     const [uuID, setuuID] = useState("");
 
     return (
-        <Context.UserProvider value={{userName, setUserName, uuID, setuuID, userKey, setUserKey}}>
+        <UserContext.Provider value={{userName, setUserName, uuID, setuuID, userKey, setUserKey}}>
             {props.children}
-        </Context.UserProvider>
+        </UserContext.Provider>
     );
 }
 

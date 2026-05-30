@@ -1,21 +1,21 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Lock, Eye, EyeOff, Search, Plus, Trash2, Copy } from "lucide-react";
 import { decryptData } from "../utilites/cryptoUtilities";
-import { retriveSecretByVault, retriveUserSecrets } from "../utilites/netUtilities";
-import UserProvider from "../UserContext";
+import { retriveUserSecrets } from "../utilites/netUtilities";
+import { UserContext } from "../UserContext";
 
 const MyVault = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [decryptedId, setDecryptedId] = useState(null);
-  const userInfo = useContext(UserProvider);
+  const userInfo = useContext(UserContext);
   const [vaultItems, setVaultItems] = useState([]);
 
   useEffect(() => {
-    async () => {
-      const result = retriveUserSecrets(userInfo.uuID);
+    (async () => {
+      const result = await retriveUserSecrets(userInfo.uuID);
       setVaultItems(result);
-    }
-  }, []);
+    })();
+  }, [userInfo.uuID]);
 
   // Mock Data: In reality, 'value' would be an Encrypted Blob from your DB
 
@@ -114,7 +114,7 @@ const MyVault = () => {
                             <Copy size={16} />
                           </button>
                           <button
-                            onClick={() => setDecryptedId(decryptData(item.id, UserKey))}
+                            onClick={() => setDecryptedId(decryptData(item.id, userInfo.userKey))}
                             className="p-2 hover:text-white text-slate-500 transition-colors"
                             title={decryptedId === item.id ? "Hide" : "Decrypt"}
                           >

@@ -1,10 +1,12 @@
 import { serve } from "@hono/node-server";
 import { Hono, type Context } from "hono";
 import { cors } from "hono/cors";
-import { PrismaClient } from "./generated/client.js";
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 import { fromHono } from "chanfana";
 import { GetVaultById } from "./routes/vault/GetVaultById.js";
+import { GetVaultsByOrg } from "./routes/vault/GetVaultsByOrg.js";
+import { CreateVault } from "./routes/vault/CreateVault.js";
+import { UpdateVault } from "./routes/vault/UpdateVault.js";
+import { DeleteVault } from "./routes/vault/DeleteVault.js";
 import { PostLogin } from "./routes/auth/PostLogin.js";
 import { GetUserById } from "./routes/users/GetUserById.js";
 
@@ -21,7 +23,11 @@ app.get("/", (c) => {
 
 const openapi = fromHono(app);
 
+openapi.get("/org/:orgId/vaults", GetVaultsByOrg);
 openapi.get("/org/:orgId/vaults/:vaultId", GetVaultById);
+openapi.post("/org/:orgId/vaults", CreateVault);
+openapi.patch("/org/:orgId/vaults/:vaultId", UpdateVault);
+openapi.delete("/org/:orgId/vaults/:vaultId", DeleteVault);
 openapi.post("/auth/login", PostLogin);
 openapi.get("/users/:userId", GetUserById);
 

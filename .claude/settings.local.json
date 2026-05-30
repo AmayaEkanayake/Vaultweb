@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-Process node -ErrorAction SilentlyContinue)",
+      "PowerShell(Stop-Process -Force -Confirm:$false)",
+      "PowerShell(npm cache clean --force 2>&1)",
+      "PowerShell(Get-ChildItem \"D:\\\\Vault\\\\Daniel\\\\vault-api\\\\node_modules\\\\chanfana\\\\src\" | ForEach-Object { $_.Name })",
+      "PowerShell(Get-ChildItem \"D:\\\\Vault\\\\Daniel\\\\vault-api\\\\node_modules\\\\chanfana\\\\dist\" | ForEach-Object { $_.Name })"
+    ]
+  }
+}

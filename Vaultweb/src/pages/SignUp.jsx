@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
-import { Lock, Mail, ArrowRight, ShieldCheck, Github } from 'lucide-react';
+import { Lock, Mail, ArrowRight, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { createMasterKey } from '../utilites/cryptoUtilities';
-import { submitAccount, retriveUserInfo } from '../utilites/netUtilities';
-import { useContext } from 'react';
+import { submitAccount } from '../utilites/netUtilities';
 import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../UserContext';
 
 const SignUp = () => {
     const [email, setEmail] = useState('');
@@ -14,8 +11,9 @@ const SignUp = () => {
 
     const navigate = useNavigate();
 
-    const handleSignUp = (e) => {
-        result = submitAccount(email, "", password, organisation);
+    const handleSignUp = async (e) => {
+        e.preventDefault();
+        await submitAccount(email, "", password, organisation);
         navigate("/signin");
     };
 

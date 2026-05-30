@@ -58,10 +58,10 @@ export const decryptDataPublic = async (cipherText, key) => {
     return(plainText);
 };
 
-export const encryptBase64 = async (plainText) => {
-    
+export const encryptBase64 = async () => {
+
 }
 
-export const decryptBase64 = async (cipherText) => {
-    
+export const decryptBase64 = async () => {
+
 }
