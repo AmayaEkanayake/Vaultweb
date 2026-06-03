@@ -1,0 +1,16 @@
+enum UserRole {
+    ORG_USER
+    ORG_ADMIN
+}
+
+model User {
+    id           String      @id @unique @default(uuid(7))
+    orgId        String
+    org          Org         @relation(fields: [orgId], references: [id], onDelete: Cascade)
+    email        String      @unique
+    passwordHash String
+    role         UserRole
+    userVaults   UserVault[]
+    createdAt    DateTime    @default(now())
+    updatedAt    DateTime    @updatedAt
+}

@@ -1,0 +1,20 @@
+// A user having a UserVault row means they have access to the vault. Vaults are all owned by the org not the user.
+
+model UserVault {
+    id      String @id @unique @default(uuid(7))
+    userId  String
+    vaultId String
+    user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    vault   Vault  @relation(fields: [vaultId], references: [id], onDelete: Cascade)
+
+    // Permissions
+    permCanCreateItems         Boolean @default(false)
+    permCanRemoveUserFromVault Boolean @default(false)
+    permCanAddUserFromVault    Boolean @default(false)
+
+    wrappedKey String
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+
+    @@unique([userId, vaultId])
+}

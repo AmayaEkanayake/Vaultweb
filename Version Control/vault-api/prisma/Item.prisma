@@ -1,0 +1,8 @@
+model Item {
+    id             String   @id @unique @default(uuid(7))
+    name           String
+    submissionData String // IV + Secret
+    vaultId        String
+    vault          Vault    @relation(fields: [vaultId], references: [id], onDelete: Cascade)
+    updatedAt      DateTime @updatedAt
+}

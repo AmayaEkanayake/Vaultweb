@@ -1,0 +1,13 @@
+// The UserDepartment model represents the many-to-many relationship between users and departments.
+
+model UserDepartment {
+    id           String     @id @unique @default(uuid(7))
+    userId       String
+    departmentId String
+    user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+    department   Department @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+    createdAt    DateTime   @default(now())
+    updatedAt    DateTime   @updatedAt
+
+    @@unique([userId, departmentId])
+}

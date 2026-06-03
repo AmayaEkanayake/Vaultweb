@@ -1,0 +1,12 @@
+// The department is within an organization. Each department can have multiple vaults and can be accessed by multiple users through the UserDepartment relation.
+
+model Department {
+    id              String           @id @unique @default(uuid(7))
+    name            String
+    orgId           String
+    org             Org              @relation(fields: [orgId], references: [id], onDelete: Cascade)
+    vaults          Vault[]
+    userDepartments UserDepartment[]
+    createdAt       DateTime         @default(now())
+    updatedAt       DateTime         @updatedAt
+}
